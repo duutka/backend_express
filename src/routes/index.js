@@ -1,7 +1,7 @@
 /* OTHER */
-import plants from './plants.routes.js';
-import deseases from './deseases.routes.js';
-import plantParts from './plant-parts.routes.js';
+import plants from './dictionary/plants.js';
+import deseases from './dictionary/deseases.js';
+import plantParts from './dictionary/plant-parts.js';
 
 export default {
     plants,
