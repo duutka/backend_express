@@ -4,7 +4,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 
 /* OTHER */
-import routes from './routes/routes.js';
+import routes from './routes/index.js';
 
 dotenv.config();
 
