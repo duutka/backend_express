@@ -1,6 +1,9 @@
 /* NPM */
 import { Router } from 'express';
 
+/* OTHER */
+import plantController from '../../controllers/plant/index.js';
+
 const data = [
     {id:0,name: '    apple ' },		
     {id:1,name:'    citrus ' },		
@@ -38,8 +41,6 @@ const data = [
 
 const router = Router();
 
-router.get('/', (req, res) => {
-    return res.json(data);
-});
+router.get('/plants', plantController.getPlants);
 
 export default router;

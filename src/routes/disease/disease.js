@@ -1,6 +1,9 @@
 /* NPM */
 import { Router } from 'express';
 
+/* OTHER */
+import diseaseController from '../../controllers/disease/index.js';
+
 const data = [
     {id:0,name: 'healthy ' },
     {id:1,name: 'rust ' },
@@ -15,8 +18,6 @@ const data = [
 
 const router = Router();
 
-router.get('/', (req, res) => {
-    return res.json(data);
-});
+router.get('/diseases', diseaseController.getDisease);
 
 export default router;

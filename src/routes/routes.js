@@ -1,14 +1,14 @@
 /* DICTIONARY */
-import plants from './dictionary/plants.js';
-import deseases from './dictionary/deseases.js';
-import plantParts from './dictionary/plant-parts.js';
+import plants from './plant/plant.js';
+import diseases from './disease/disease.js';
+import plantParts from './plant-part/plant-part.js';
 
 /* SCANS */
-import scans from './scans/scans.js';
+import scans from './scan/scan.js';
 
 export default {
     plants,
-    deseases,
+    diseases,
     plantParts,
     scans,
 };
