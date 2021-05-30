@@ -8,12 +8,13 @@ import upload from '../config/multer.config.js';
 
 const router = Router();
 
-router.get('/scans', scanController.all);
-router.get('/scan/:id',
+router.get('/scans', scanController.findAll);
+
+router.get('/scans/:id',
     [
         check('id', 'Некорректный id').isNumeric(),
     ],
-    scanController.byId);
+    scanController.findById);
 
 // TODO: image field validation
 router.post('/scans',
@@ -23,6 +24,6 @@ router.post('/scans',
         check('plantData.*.plantpartId', 'Некорректный id органа растения').isNumeric(),
     ],
     upload.single('image'),
-    scanController.create);
+    scanController.add);
 
 export default router;

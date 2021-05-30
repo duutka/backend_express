@@ -4,7 +4,7 @@ import { validationResult } from 'express-validator';
 /* OTHER */
 import Disease from '../models/disease.js';
 
-const create = async (req, res) => {
+const add = async (req, res) => {
     try {
         const errors = validationResult(req);
 
@@ -17,7 +17,7 @@ const create = async (req, res) => {
         const { nameRu } = req.body;
 
         // TODO: translate name to english
-        const createdId = await Disease.create({ nameEn: null, nameRu });
+        const createdId = await Disease.add({ nameEn: null, nameRu });
 
         res.status(200).json(createdId);
     }
@@ -28,9 +28,9 @@ const create = async (req, res) => {
     }
 };
 
-const all = async (req, res) => {
+const findAll = async (req, res) => {
     try {
-        const diseases = await Disease.all();
+        const diseases = await Disease.findAll();
 
         res.status(200).json(diseases);
     }
@@ -41,7 +41,7 @@ const all = async (req, res) => {
     }
 };
 
-const byId = async (req, res) => {
+const findById = async (req, res) => {
     try {
         const errors = validationResult(req);
 
@@ -53,7 +53,7 @@ const byId = async (req, res) => {
 
         const { id } = req.params;
 
-        const disease = await Disease.byId(id);
+        const disease = await Disease.findById(id);
 
         res.status(200).json(disease);
     }
@@ -64,4 +64,4 @@ const byId = async (req, res) => {
     }
 };
 
-export default { all, byId, create };
+export default { findAll, findById, add };

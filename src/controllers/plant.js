@@ -1,8 +1,10 @@
-/* OTHER */
-import Plant from '../models/plant.js';
+/* NPM */
 import { validationResult } from 'express-validator';
 
-const create = async (req, res) => {
+/* OTHER */
+import Plant from '../models/plant.js';
+
+const add = async (req, res) => {
     try {
         const errors = validationResult(req);
 
@@ -15,7 +17,7 @@ const create = async (req, res) => {
         const { nameRu } = req.body;
 
         // TODO: translate name to english
-        const createdId = await Plant.create({ nameEn: null, nameRu });
+        const createdId = await Plant.add({ nameEn: null, nameRu });
 
         res.status(200).json(createdId);
     }
@@ -27,9 +29,9 @@ const create = async (req, res) => {
     }
 };
 
-const all = async (req, res) => {
+const findAll = async (req, res) => {
     try {
-        const plants = await Plant.all();
+        const plants = await Plant.findAll();
         res.status(200).json(plants);
     }
     catch (error) {
@@ -40,7 +42,7 @@ const all = async (req, res) => {
     }
 };
 
-const byId = async (req, res) => {
+const findById = async (req, res) => {
     try {
         const errors = validationResult(req);
 
@@ -52,7 +54,7 @@ const byId = async (req, res) => {
 
         const { id } = req.params;
 
-        const plants = await Plant.byId(id);
+        const plants = await Plant.findById(id);
         res.status(200).json(plants);
     }
     catch (error) {
@@ -63,4 +65,4 @@ const byId = async (req, res) => {
     }
 };
 
-export default { all, byId, create };
+export default { findAll, findById, add };

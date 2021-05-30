@@ -2,7 +2,7 @@
 import pool from '../config/db.config.js';
 
 /* Get all scans */
-const all = () => new Promise(async (resolve, reject) => {
+const findAll = () => new Promise(async (resolve, reject) => {
     try {
         const scans = await pool.query('SELECT * FROM scan_vw');
 
@@ -14,7 +14,7 @@ const all = () => new Promise(async (resolve, reject) => {
 });
 
 /* Get scan by id */
-const byId = (id) => new Promise(async (resolve, reject) => {
+const findById = (id) => new Promise(async (resolve, reject) => {
     try {
         const scan = await pool.query('SELECT * FROM scan_vw WHERE id = $1', [id]);
 
@@ -26,7 +26,7 @@ const byId = (id) => new Promise(async (resolve, reject) => {
 });
 
 /* Create new scan */
-const create = ({ plantId, diseaseId, plantPartId, imageName }) =>
+const add = ({ plantId, diseaseId, plantPartId, imageName }) =>
     new Promise(async (resolve, reject) => {
         try {
             const result = await pool.query(`INSERT INTO scan
@@ -42,4 +42,4 @@ const create = ({ plantId, diseaseId, plantPartId, imageName }) =>
         }
     });
 
-export default { all, byId, create };
+export default { findAll, findById, add };

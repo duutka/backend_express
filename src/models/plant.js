@@ -2,7 +2,7 @@
 import pool from '../config/db.config.js';
 
 /* Get all plants */
-const all = () => new Promise(async (resolve, reject) => {
+const findAll = () => new Promise(async (resolve, reject) => {
     try {
         const plants = await pool.query('SELECT * FROM plant');
 
@@ -14,7 +14,7 @@ const all = () => new Promise(async (resolve, reject) => {
 });
 
 /* Get plant by id */
-const byId = (id) => new Promise(async (resolve, reject) => {
+const findById = (id) => new Promise(async (resolve, reject) => {
     try {
         const plant = await pool.query('SELECT * FROM plant WHERE id = $1', [id]);
 
@@ -26,7 +26,7 @@ const byId = (id) => new Promise(async (resolve, reject) => {
 });
 
 /* Create new plant */
-const create = ({ nameEn, nameRu }) =>
+const add = ({ nameEn, nameRu }) =>
     new Promise(async (resolve, reject) => {
         try {
             const result = await pool.query(`INSERT INTO plant
@@ -42,4 +42,4 @@ const create = ({ nameEn, nameRu }) =>
         }
     });
 
-export default { all, byId, create };
+export default { findAll, findById, add };

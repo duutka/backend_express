@@ -1,8 +1,10 @@
-/* OTHER */
-import Scan from '../models/scan.js';
+/* NPM */
 import { validationResult } from 'express-validator';
 
-const create = async (req, res) => {
+/* OTHER */
+import Scan from '../models/scan.js';
+
+const add = async (req, res) => {
     try {
         const errors = validationResult(req);
 
@@ -22,7 +24,7 @@ const create = async (req, res) => {
 
         //TODO: image upload
 
-        const createdId = await Scan.create({
+        const createdId = await Scan.add({
             plantId, diseaseId, plantPartId: plantpartId, imageName: 'some-name.png',
         });
 
@@ -36,9 +38,9 @@ const create = async (req, res) => {
     }
 };
 
-const all = async (req, res) => {
+const findAll = async (req, res) => {
     try {
-        const scans = await Scan.all();
+        const scans = await Scan.findAll();
         res.status(200).json(scans);
     }
     catch (error) {
@@ -49,7 +51,7 @@ const all = async (req, res) => {
     }
 };
 
-const byId = async (req, res) => {
+const findById = async (req, res) => {
     try {
         const errors = validationResult(req);
 
@@ -61,7 +63,7 @@ const byId = async (req, res) => {
 
         const { id } = req.params;
 
-        const scan = await Scan.byId(id);
+        const scan = await Scan.findById(id);
         res.status(200).json(scan);
     }
     catch (error) {
@@ -72,4 +74,4 @@ const byId = async (req, res) => {
     }
 };
 
-export default { create, all, byId };
+export default { findAll, findById, add };

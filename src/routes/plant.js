@@ -7,19 +7,21 @@ import plantController from '../controllers/plant.js';
 
 const router = Router();
 
-router.get('/plants', plantController.all);
-router.get('/plant/:id',
+router.get('/plants', plantController.findAll);
+
+router.get('/plants/:id',
     [
         check('id', 'Некорректный id').isNumeric(),
     ],
-    plantController.byId);
-router.post('/plant',
+    plantController.findById);
+
+router.post('/plants',
     [
         check('nameRu', 'Необходимо название на русском')
         .trim()
         .exists()
         .isAlpha('ru-RU', { ignore: ' ' }),
     ],
-    plantController.create);
+    plantController.add);
 
 export default router;
