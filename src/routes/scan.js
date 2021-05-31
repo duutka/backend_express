@@ -22,6 +22,10 @@ router.post('/scans',
         check('plantData.*.plantId', 'Некорректный id растения').isNumeric(),
         check('plantData.*.diseaseId', 'Некорректный id болезни').isNumeric(),
         check('plantData.*.plantpartId', 'Некорректный id органа растения').isNumeric(),
+        check('image').custom(({req}) => {
+            if(req.file===undefined) return req.file;
+            else return false;
+        }).withMessage('Ошибка при загрузке файла')
     ],
     upload.single('image'),
     scanController.add);

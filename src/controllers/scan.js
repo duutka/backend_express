@@ -3,6 +3,7 @@ import { validationResult } from 'express-validator';
 import { v4 } from 'uuid';
 import dotenv from 'dotenv';
 import fs from 'fs-extra';
+import path from 'path';
 
 /* OTHER */
 import Scan from '../models/scan.js';
@@ -22,20 +23,15 @@ const add = async (req, res) => {
             });
         }
         
-        if(req.file===undefined) {
-            return res.status(400).json({
-                errors: "File is not a image"
-            })
-        }
-
         const { plantData: { plantId, diseaseId, plantpartId } } = req.body;
             
-        const plantName = await Plant.findById(plantId);
-        const diseaseName = await Disease.findById(diseaseId);
-        const plantpartName = await PlantPart.findById(plantpartId);
+        const plant = await Plant.findById(plantId);
+        const disease = await Disease.findById(diseaseId);
+        const plantpart = await PlantPart.findById(plantpartId);
         
-        const newPath = `${process.env.UPLOAD_PATH}/${plantName.name_en}/${diseaseName.name_en}/${plantpartName.name_en}/`;
-        const newName = `${plantName.name_en}-${diseaseName.name_en}-${plantpartName.name_en}-${v4()}.ext`;
+        const ext = path.extname(req.file.filename);
+        const newPath = `${process.env.UPLOAD_PATH}/${plant.name_en}/${disease.name_en}/${plantpart.name_en}/`;
+        const newName = `${plant.name_en}-${disease.name_en}-${plantpart.name_en}-${v4()}.${ext}`;
         
         fs.move(req.file.path, newPath + newName, (error) => {
             if (error) {
@@ -44,7 +40,7 @@ const add = async (req, res) => {
         });
 
         const createdId = await Scan.add({
-            plantId, diseaseId, plantPartId: plantpartId, imageName: newName,
+            plantId, diseaseId, plantPartId, imageName: newName,
         });
 
         res.status(200).json(createdId);
