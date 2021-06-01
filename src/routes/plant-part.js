@@ -9,7 +9,12 @@ const router = Router();
 
 router.get('/plant-parts', plantPartController.findAll);
 
-router.get('/plant-parts/:id', validator.validatorId, validator.result, plantPartController.findById);
+router.get(
+    '/plant-parts/:id',
+    validator.validatorId,
+    validator.result,
+    plantPartController.findById,
+);
 
 router.post('/plant-parts', validator.validatorName, validator.result, plantPartController.add);
 

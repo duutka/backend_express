@@ -12,12 +12,13 @@ router.get('/scans', scanController.findAll);
 
 router.get('/scans/:id', validator.validatorId, validator.result, scanController.findById);
 
-router.post('/scans',
+router.post(
+    '/scans',
     validator.validatorPlantData,
     validator.result,
     upload.single('image'),
     validator.validateFile,
     scanController.add,
-    );
+);
 
 export default router;

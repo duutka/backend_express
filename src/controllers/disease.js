@@ -9,8 +9,7 @@ const add = async (req, res) => {
         const createdId = await Disease.add({ nameEn: null, nameRu });
 
         res.status(200).json(createdId);
-    }
-    catch (error) {
+    } catch (error) {
         res.status(500).json({
             error: error.message,
         });
@@ -22,8 +21,7 @@ const findAll = async (req, res) => {
         const diseases = await Disease.findAll();
 
         res.status(200).json(diseases);
-    }
-    catch (error) {
+    } catch (error) {
         res.status(500).json({
             error: error.message,
         });
@@ -37,8 +35,7 @@ const findById = async (req, res) => {
         const disease = await Disease.findById(id);
 
         res.status(200).json(disease);
-    }
-    catch (error) {
+    } catch (error) {
         res.status(500).json({
             error: error.message,
         });

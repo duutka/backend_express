@@ -14,27 +14,32 @@ dotenv.config();
 
 const add = async (req, res) => {
     try {
-        const { plantData: { plantId, diseaseId, plantpartId } } = req.body;
+        const {
+            plantData: { plantId, diseaseId, plantpartId },
+        } = req.body;
 
         const plant = await Plant.findById(plantId);
         const disease = await Disease.findById(diseaseId);
         const plantpart = await PlantPart.findById(plantpartId);
-        
+
         const ext = path.extname(req.file.filename);
-        const newPath = `${process.env.UPLOAD_PATH}/${plant.name_en}/${disease.name_en}/${plantpart.name_en}/`;
+        const newPath = `${process.env.UPLOAD_PATH}/${plant.name_en}
+            /${disease.name_en}/${plantpart.name_en}/`;
         const newName = `${plant.name_en}-${disease.name_en}-${plantpart.name_en}-${v4()}.${ext}`;
-        
+
         fs.move(req.file.path, newPath + newName, (error) => {
             if (error) throw new Error(error);
         });
 
         const createdId = await Scan.add({
-            plantId, diseaseId, plantpartId, imageName: newName,
+            plantId,
+            diseaseId,
+            plantpartId,
+            imageName: newName,
         });
 
         res.status(200).json(createdId);
-    }
-    catch (error) {
+    } catch (error) {
         res.status(500).json({
             error: error.message,
             stack: error.stack,
@@ -46,8 +51,7 @@ const findAll = async (req, res) => {
     try {
         const scans = await Scan.findAll();
         res.status(200).json(scans);
-    }
-    catch (error) {
+    } catch (error) {
         res.status(500).json({
             error: error.message,
             stack: error.stack,
@@ -61,8 +65,7 @@ const findById = async (req, res) => {
 
         const scan = await Scan.findById(id);
         res.status(200).json(scan);
-    }
-    catch (error) {
+    } catch (error) {
         res.status(500).json({
             error: error.message,
             stack: error.stack,
