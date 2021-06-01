@@ -1,0 +1,20 @@
+{
+    "env": {
+        "node": true,
+        "es6": true
+    },
+    "extends": ["eslint:recommended", "prettier"],
+    "plugins": ["prettier"],
+    "parserOptions": {
+        "sourceType": "module"
+    },
+    "rules": {
+        "prettier/prettier": "error",
+        "no-console": 0,
+        "camelcase": "warn",
+        "indent": [ "error", 2 ],
+        "linebreak-style": [ "error", "unix" ],
+        "quotes": [ "error", "single" ],
+        "semi": [ "error", "never" ]
+    }
+}
