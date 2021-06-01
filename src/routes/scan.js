@@ -12,7 +12,6 @@ router.get('/scans', scanController.findAll);
 
 router.get('/scans/:id', validator.validatorId, validator.result, scanController.findById);
 
-// TODO: image field validation
 router.post('/scans',
     validator.validatorPlantData,
     validator.result,
