@@ -1,31 +1,35 @@
 /* NPM */
-import { validationResult } from 'express-validator';
+import { v4 } from 'uuid';
+import dotenv from 'dotenv';
+import fs from 'fs-extra';
+import path from 'path';
 
 /* OTHER */
 import Scan from '../models/scan.js';
+import Plant from '../models/plant.js';
+import PlantPart from '../models/plant-part.js';
+import Disease from '../models/disease.js';
+
+dotenv.config();
 
 const add = async (req, res) => {
     try {
-        const errors = validationResult(req);
-
-        if (!errors.isEmpty()) {
-            return res.status(400).json({
-                errors: errors.array(),
-            });
-        }
-
-        console.log(req.file);
-
         const { plantData: { plantId, diseaseId, plantpartId } } = req.body;
 
-        console.log('PlantId = ', plantId);
-        console.log('DiseaseId = ', diseaseId);
-        console.log('PlantpartId = ', plantpartId);
-
-        //TODO: image upload
+        const plant = await Plant.findById(plantId);
+        const disease = await Disease.findById(diseaseId);
+        const plantpart = await PlantPart.findById(plantpartId);
+        
+        const ext = path.extname(req.file.filename);
+        const newPath = `${process.env.UPLOAD_PATH}/${plant.name_en}/${disease.name_en}/${plantpart.name_en}/`;
+        const newName = `${plant.name_en}-${disease.name_en}-${plantpart.name_en}-${v4()}.${ext}`;
+        
+        fs.move(req.file.path, newPath + newName, (error) => {
+            if (error) throw new Error(error);
+        });
 
         const createdId = await Scan.add({
-            plantId, diseaseId, plantPartId: plantpartId, imageName: 'some-name.png',
+            plantId, diseaseId, plantpartId, imageName: newName,
         });
 
         res.status(200).json(createdId);
@@ -53,14 +57,6 @@ const findAll = async (req, res) => {
 
 const findById = async (req, res) => {
     try {
-        const errors = validationResult(req);
-
-        if (!errors.isEmpty()) {
-            return res.status(400).json({
-                errors: errors.array(),
-            });
-        }
-
         const { id } = req.params;
 
         const scan = await Scan.findById(id);

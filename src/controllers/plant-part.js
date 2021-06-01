@@ -1,19 +1,8 @@
-/* NPM */
-import { validationResult } from 'express-validator';
-
 /* OTHER */
 import PlantPart from '../models/plant-part.js';
 
 const add = async (req, res) => {
     try {
-        const errors = validationResult(req);
-
-        if (!errors.isEmpty()) {
-            return res.status(400).json({
-                errors: errors.array(),
-            });
-        }
-
         const { nameRu } = req.body;
 
         // TODO: translate name to english
