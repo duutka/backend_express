@@ -15,16 +15,8 @@ dotenv.config();
 
 const add = async (req, res) => {
     try {
-        const errors = validationResult(req);
-
-        if (!errors.isEmpty()) {
-            return res.status(400).json({
-                errors: errors.array(),
-            });
-        }
-        
         const { plantData: { plantId, diseaseId, plantpartId } } = req.body;
-            
+
         const plant = await Plant.findById(plantId);
         const disease = await Disease.findById(diseaseId);
         const plantpart = await PlantPart.findById(plantpartId);
@@ -34,13 +26,11 @@ const add = async (req, res) => {
         const newName = `${plant.name_en}-${disease.name_en}-${plantpart.name_en}-${v4()}.${ext}`;
         
         fs.move(req.file.path, newPath + newName, (error) => {
-            if (error) {
-                return res.status(400).json({error});
-            }
+            if (error) throw new Error(error);
         });
 
         const createdId = await Scan.add({
-            plantId, diseaseId, plantPartId, imageName: newName,
+            plantId, diseaseId, plantpartId, imageName: newName,
         });
 
         res.status(200).json(createdId);
@@ -68,14 +58,6 @@ const findAll = async (req, res) => {
 
 const findById = async (req, res) => {
     try {
-        const errors = validationResult(req);
-
-        if (!errors.isEmpty()) {
-            return res.status(400).json({
-                errors: errors.array(),
-            });
-        }
-
         const { id } = req.params;
 
         const scan = await Scan.findById(id);

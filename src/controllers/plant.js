@@ -6,14 +6,6 @@ import Plant from '../models/plant.js';
 
 const add = async (req, res) => {
     try {
-        const errors = validationResult(req);
-
-        if (!errors.isEmpty()) {
-            return res.status(400).json({
-                errors: errors.array(),
-            });
-        }
-
         const { nameRu } = req.body;
 
         // TODO: translate name to english
@@ -44,14 +36,6 @@ const findAll = async (req, res) => {
 
 const findById = async (req, res) => {
     try {
-        const errors = validationResult(req);
-
-        if (!errors.isEmpty()) {
-            return res.status(400).json({
-                errors: errors.array(),
-            });
-        }
-
         const { id } = req.params;
 
         const plants = await Plant.findById(id);

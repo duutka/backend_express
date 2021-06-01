@@ -1,27 +1,16 @@
 /* NPM */
 import { Router } from 'express';
-import { check } from 'express-validator';
 
 /* OTHER */
 import plantPartController from '../controllers/plant-part.js';
+import validator from '../middleware/validator.js';
 
 const router = Router();
 
 router.get('/plant-parts', plantPartController.findAll);
 
-router.get('/plant-parts/:id',
-    [
-        check('id', 'Некорректный id').isNumeric(),
-    ],
-    plantPartController.findById);
+router.get('/plant-parts/:id', validator.validatorId, validator.result, plantPartController.findById);
 
-router.post('/plant-parts',
-    [
-        check('nameRu', 'Необходимо название на русском')
-        .trim()
-        .exists()
-        .isAlpha('ru-RU', { ignore: ' ' }),
-    ],
-    plantPartController.add);
+router.post('/plant-parts', validator.validatorName, validator.result, plantPartController.add);
 
 export default router;

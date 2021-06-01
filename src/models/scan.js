@@ -26,14 +26,14 @@ const findById = (id) => new Promise(async (resolve, reject) => {
 });
 
 /* Create new scan */
-const add = ({ plantId, diseaseId, plantPartId, imageName }) =>
+const add = ({ plantId, diseaseId, plantpartId, imageName }) =>
     new Promise(async (resolve, reject) => {
         try {
             const result = await pool.query(`INSERT INTO scan
                 (plant_id, disease_id, plant_part_id, image_name)
                 VALUES ($1, $2, $3, $4)
                 RETURNING id`,
-                [plantId, diseaseId, plantPartId, imageName]);
+                [plantId, diseaseId, plantpartId, imageName]);
 
             resolve(result.rows[0].id);
         }
