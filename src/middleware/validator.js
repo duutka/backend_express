@@ -1,5 +1,5 @@
 /* NPM */
-import { check, validationResult} from 'express-validator';
+import { check, validationResult } from 'express-validator';
 
 const validateFile = (req, res, next) => {
     if (!req.file){

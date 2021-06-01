@@ -1,5 +1,4 @@
 /* NPM */
-import { validationResult } from 'express-validator';
 import { v4 } from 'uuid';
 import dotenv from 'dotenv';
 import fs from 'fs-extra';

@@ -1,6 +1,3 @@
-/* NPM */
-import { validationResult } from 'express-validator';
-
 /* OTHER */
 import Plant from '../models/plant.js';
 
