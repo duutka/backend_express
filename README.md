@@ -31,6 +31,20 @@
 | **/scans/:id** | GET  | Получение скана по id                        | id: number | {<br>id: number,<br>image_name: string,<br>upload_date: string,<br>plant_id: number,<br>plant_name_ru: string,<br>plant_name_en: string,<br>disease_id: number,<br>disease_name_ru: string,<br>disease_name_en: string,<br>plant_part_id: number,<br>plant_part_name_ru: string,<br>plant_part_name_en: string,<br>} |
 | **/scans**     | POST | Добавление скана, возвращает id новой записи | {<br>image: {<br>name: string,<br>type: string,<br>uri: string<br>},<br>plantData: {<br>plantId: number,<br>diseaseId: number,<br>planpartId: number<br>}<br>} | number |
 
+### Валидации
+| Запрос               | Тип  | Условие для ошибки                              | Ошибка                            | Статус |
+| -------------------- | ---- | :--------------------------------------------:  | ----------------------------------| ------ |
+| **/plants/:id**      | GET  | Если Id не число                                | Некорректный id                   | 400    |
+| **/plant-parts/:id** | GET  | Если Id не число                                | Некорректный id                   | 400    |
+| **/diseases/:id**    | GET  | Если Id не число                                | Некорректный id                   | 400    |   
+| **/plant-parts**     | POST | Если nameRu не на русском                      | Необходимо название на русском    | 400    |
+| **/diseases**        | POST | Если nameRu не на русском                      | Необходимо название на русском    | 400    |
+| **/plants**          | POST | Если nameRu не на русском                      | Необходимо название на русском    | 400    |
+| **/plants**          | POST | Если plantId не число                           | Некорректный id растения          | 400    |
+| **/plants**          | POST | Если diseaseId не число                         | Некорректный id болезни           | 400    |
+| **/plants**          | POST | Если plantpartId не число                       | Некорректный id органа растения   | 400    |
+| **/plants**          | POST | Если файл отсутствует(req.file==undefined) или формат файла не .png, .jpg или .jpeg | Необходимо загрузить файл или файл не является картинкой|400|
+
 ## Работа с проектом
 1. `npm i`: Установка зависимостей проекта;
 2. `npm run start`: Запуск dev сервера на http://localhost:8000/;
