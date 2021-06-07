@@ -31,14 +31,6 @@ const findAll = async (req, res) => {
 
 const findById = async (req, res) => {
     try {
-        const errors = validationResult(req);
-
-        if (!errors.isEmpty()) {
-            return res.status(400).json({
-                errors: errors.array(),
-            });
-        }
-
         const { id } = req.params;
 
         const plantPart = await PlantPart.findById(id);
