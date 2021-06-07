@@ -4,7 +4,6 @@ import { check, validationResult } from 'express-validator';
 const validateFile = (req, res, next) => {
     if (!req.file) {
         return res.status(400).json({
-            success: false,
             message: 'Необходимо загрузить файл или файл не является картинкой',
         });
     }
