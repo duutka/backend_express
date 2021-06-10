@@ -18,7 +18,7 @@ const add = ({ login, password, firstname, lastname }) =>
     new Promise(async (resolve, reject) => {
         try {
             await pool.query(
-                `INSERT INTO user
+                `INSERT INTO "user"
                 (login, password, firstname, lastname)
                 VALUES ($1, $2, $3, $4)`,
                 [login, password, firstname, lastname],

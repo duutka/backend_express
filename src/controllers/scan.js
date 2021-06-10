@@ -23,12 +23,12 @@ const add = async (req, res) => {
         const plantpart = await PlantPart.findById(plantpartId);
 
         const ext = path.extname(req.file.filename);
-        const newPath = `${process.env.UPLOAD_PATH}/${plant.name_en}
-            /${disease.name_en}/${plantpart.name_en}/`;
+        // eslint-disable-next-line max-len
+        const newPath = `${process.env.UPLOAD_PATH}/${plant.name_en}/${disease.name_en}/${plantpart.name_en}/`;
         const newName = `${plant.name_en}-${disease.name_en}-${plantpart.name_en}-${v4()}.${ext}`;
 
         fs.move(req.file.path, newPath + newName, (error) => {
-            if (error) throw new Error(error);
+            if (error) throw error;
         });
 
         const createdId = await Scan.add({
