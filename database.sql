@@ -156,3 +156,31 @@ alter table scan_vw
 
 INSERT INTO public.scan_vw (id, image_name, upload_date, plant_id, plant_name_en, plant_name_ru, disease_id, disease_name_en, disease_name_ru, plant_part_id, plant_part_name_en, plant_part_name_ru) VALUES (3, 'some-name.png', '2021-05-29 16:21:24.283708', 2, 'Dandelion', 'Одуванчик', 1, 'Ulcer', 'Язва', 1, 'Leafs', 'Листья');
 INSERT INTO public.scan_vw (id, image_name, upload_date, plant_id, plant_name_en, plant_name_ru, disease_id, disease_name_en, disease_name_ru, plant_part_id, plant_part_name_en, plant_part_name_ru) VALUES (4, 'some-name-2.png', '2021-05-29 16:38:26.029903', 2, 'Dandelion', 'Одуванчик', 1, 'Ulcer', 'Язва', 1, 'Leafs', 'Листья');
+
+--Create user table
+create table "user"
+(
+    login      varchar not null
+        constraint user_pk
+            primary key,
+    password   varchar not null,
+    firstname  varchar,
+    lastname varchar
+);
+
+comment on table "user" is 'Пользователь';
+
+comment on column "user".login is 'Логин';
+
+comment on column "user".password is 'Пароль';
+
+comment on column "user".firstname is 'Имя';
+
+comment on column "user".lastname is 'Фамилия';
+
+alter table "user"
+    owner to postgres;
+
+create unique index user_login_uindex
+    on "user" (login);
+
