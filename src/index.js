@@ -7,7 +7,7 @@ import passport from 'passport';
 
 /* OTHER */
 import routes from './routes/index.js';
-import passportConfig from './middleware/passport.js';
+import passportConfig from './config/passport.config.js';
 
 dotenv.config();
 
