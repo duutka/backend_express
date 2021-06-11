@@ -2,8 +2,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import session from 'express-session';
-import csrf from 'csurf';
+// import cookieParser from 'cookie-parser';
 
 /* OTHER */
 import routes from './routes/index.js';
@@ -16,16 +15,7 @@ app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-app.use(
-    session({
-        name: 'SESSION_LEAFS',
-        secret: `${process.env.SECRET}`,
-        saveUninitialized: true,
-        resave: true,
-        duration: 30 * 60 * 1000,
-    }),
-);
+// app.use(cookieParser());
 
 /* ROUTES */
 app.use('/', routes.diseases);
