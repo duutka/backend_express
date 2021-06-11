@@ -23,7 +23,6 @@ router.use(
         secret: `${process.env.SESSION_SECRET}`,
         saveUninitialized: true,
         resave: true,
-        duration: 60 * 60 * 1000,
     }),
 );
 

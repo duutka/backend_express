@@ -89,7 +89,7 @@ const authUser = async (req, res) => {
         const token = jwt.sign(req.body, process.env.JWT_SECRET);
         const b = Buffer.from(hash);
         const refreshToken = b.toString('base64');
-        res.status(201).send({ accessToken: token, refreshToken: refreshToken });
+        res.status(201).send({ accessToken: `Bearer ${token}`, refreshToken: refreshToken });
     } catch (error) {
         res.status(500).json({
             error: error.message,
