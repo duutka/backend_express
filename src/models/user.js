@@ -5,7 +5,7 @@ import pool from '../config/db.config.js';
 const findByLogin = (login) =>
     new Promise(async (resolve, reject) => {
         try {
-            const user = await pool.query('SELECT * FROM user WHERE login = $1', [login]);
+            const user = await pool.query('SELECT * FROM "user" WHERE login = $1', [login]);
 
             resolve(user.rows[0]);
         } catch (error) {
@@ -18,7 +18,7 @@ const add = ({ login, password, firstname, lastname }) =>
     new Promise(async (resolve, reject) => {
         try {
             await pool.query(
-                `INSERT INTO user
+                `INSERT INTO "user"
                 (login, password, firstname, lastname)
                 VALUES ($1, $2, $3, $4)`,
                 [login, password, firstname, lastname],
