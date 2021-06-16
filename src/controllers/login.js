@@ -33,16 +33,8 @@ const registerUser = async (req, res) => {
             password: hashPass,
             firstname: firstname,
             lastname: lastname,
-        })
-            .then(() => {
-                res.status(200).json({ message: 'Пользователь зарегистрирован' });
-            })
-            .catch((error) => {
-                res.status(500).json({
-                    error: error.message,
-                    stack: error.stack,
-                });
-            });
+        });
+        res.status(200).json({ message: 'Пользователь зарегистрирован' });
     } catch (error) {
         res.status(500).json({
             error: error.message,
@@ -56,7 +48,7 @@ const verifyUser = async (req, res, next) => {
         const { login, password } = req.body;
 
         const user = await User.findByLogin(login);
-        if (!user.login) {
+        if (!user) {
             res.status(404).send({ error: 'Неверный логин или пароль' });
         } else {
             const passwordFields = user.password.split('$');

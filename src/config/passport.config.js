@@ -22,13 +22,13 @@ const passportConfig = () => {
             try {
                 const user = await User.findByLogin(payload.login);
 
-                const profile = {
-                    login: user.login,
-                    firstname: user.firstname,
-                    lastname: user.lastname,
-                };
-
                 if (user) {
+                    const profile = {
+                        login: user.login,
+                        firstname: user.firstname,
+                        lastname: user.lastname,
+                    };
+
                     done(null, profile);
                 } else {
                     done(null, false);
