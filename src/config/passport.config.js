@@ -4,7 +4,7 @@ import JwtPassport from 'passport-jwt';
 import dotenv from 'dotenv';
 
 /* OTHER */
-import User from '../models/user.js';
+import Person from '../models/person.js';
 
 dotenv.config();
 
@@ -20,7 +20,7 @@ const passportConfig = () => {
     passport.use(
         new jwtStrategy(options, async (payload, done) => {
             try {
-                const user = await User.findByLogin(payload.login);
+                const user = await Person.findByLogin(payload.login);
 
                 if (user) {
                     const profile = {
@@ -34,7 +34,7 @@ const passportConfig = () => {
                     done(null, false);
                 }
             } catch (error) {
-                console.log(error);
+                console.log('[37]:', error);
             }
         }),
     );
