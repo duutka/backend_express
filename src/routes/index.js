@@ -7,14 +7,12 @@ import plantParts from './plant-part.js';
 import scans from './scan.js';
 
 /* AUTH */
-import login from './login.js';
-import profile from './profile.js';
+import person from './person.js';
 
 export default {
     plants,
     diseases,
     plantParts,
     scans,
-    login,
-    profile,
+    person,
 };

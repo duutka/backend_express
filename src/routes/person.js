@@ -1,12 +1,11 @@
 /* NPM */
 import { Router } from 'express';
 import session from 'express-session';
-// import cookieParser from 'cookie-parser';
 import csrf from 'csurf';
 import dotenv from 'dotenv';
 
 /* OTHER */
-import loginController from '../controllers/login.js';
+import personController from '../controllers/person.js';
 import validator from '../middleware/validator.js';
 
 dotenv.config();
@@ -14,8 +13,6 @@ dotenv.config();
 const router = Router();
 
 const csrfProtection = csrf({ cookie: false });
-
-// router.use(cookieParser());
 
 router.use(
     session({
@@ -26,10 +23,16 @@ router.use(
     }),
 );
 
-router.get('/login', csrfProtection, loginController.csrfTokenGet);
+router.get('/login', csrfProtection, personController.getCsrfToken);
 
-router.post('/login', csrfProtection, loginController.verifyUser, loginController.authUser);
+router.post('/login', csrfProtection, personController.verify, personController.auth);
 
-router.post('/register', loginController.registerUser);
+router.post('/register', personController.register);
+
+router.post('/logout', personController.logout);
+
+router.get('/refresh', personController.refresh);
+
+router.get('/profile', validator.validateAuth, personController.profile);
 
 export default router;
