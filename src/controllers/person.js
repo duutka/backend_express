@@ -6,21 +6,19 @@ import dotenv from 'dotenv';
 import Person from '../models/person.js';
 import PersonDto from '../dtos/person-dto.js';
 import Token from '../models/token.js';
+import ApiError from '../exceptions/apiError.js';
 
 dotenv.config();
 
-const getCsrfToken = async (req, res) => {
+const getCsrfToken = async (req, res, next) => {
     try {
         res.status(200).json({ csrfToken: req.csrfToken() });
     } catch (error) {
-        res.status(500).json({
-            error: error.message,
-            stack: error.stack,
-        });
+        next(error);
     }
 };
 
-const register = async (req, res) => {
+const register = async (req, res, next) => {
     try {
         const { login, password, firstname, lastname } = req.body;
 
@@ -28,7 +26,7 @@ const register = async (req, res) => {
         const person = await Person.findByLogin(login);
 
         if (person) {
-            return res.status(400).json({ error: 'Пользователь с таким логином уже существует' });
+            throw ApiError.BadRequest({ error: 'Пользователь с таким логином уже существует' });
         }
 
         // Хэшируем пароль
@@ -50,12 +48,17 @@ const register = async (req, res) => {
         const tokens = Token.generateTokens({ ...personDto });
 
         // Сохранение refresh токена в бд
-        await Token.save({ login, refreshToken: tokens.refreshToken });
+        const save = await Token.save({ login, refreshToken: tokens.refreshToken });
+
+        if (!save) {
+            throw ApiError.BadRequest('Произошла ошибка, при сохранении токена');
+        }
 
         // Добавление refresh токена в куки
         res.cookie('refreshToken', tokens.refreshToken, {
             maxAge: 30 * 24 * 60 * 60 * 1000,
             httpOnly: true,
+            // HTTPS: secure: true,
         });
 
         res.status(200).json({
@@ -64,10 +67,7 @@ const register = async (req, res) => {
             person: personDto,
         });
     } catch (error) {
-        res.status(500).json({
-            error: error.message,
-            stack: error.stack,
-        });
+        next(error);
     }
 };
 
@@ -77,7 +77,7 @@ const verify = async (req, res, next) => {
 
         const person = await Person.findByLogin(login);
         if (!person) {
-            res.status(404).send({ error: 'Неверный логин или пароль' });
+            throw ApiError.BadRequest('Неверный логин или пароль');
         } else {
             const passwordFields = person.password.split('$');
             const salt = passwordFields[0];
@@ -90,18 +90,15 @@ const verify = async (req, res, next) => {
                 };
                 return next();
             } else {
-                res.status(404).send({ error: 'Неверный логин или пароль' });
+                throw ApiError.BadRequest('Неверный логин или пароль');
             }
         }
     } catch (error) {
-        res.status(500).json({
-            error: error.message,
-            stack: error.stack,
-        });
+        next(error);
     }
 };
 
-const auth = async (req, res) => {
+const auth = async (req, res, next) => {
     try {
         const { login, firstname, lastname } = req.body;
 
@@ -110,12 +107,17 @@ const auth = async (req, res) => {
         const tokens = Token.generateTokens({ ...personDto });
 
         // Сохранение refresh токена в бд
-        await Token.save({ login, refreshToken: tokens.refreshToken });
+        const save = await Token.save({ login, refreshToken: tokens.refreshToken });
+
+        if (!save) {
+            throw ApiError.BadRequest('Произошла ошибка, при сохранении токена');
+        }
 
         // Добавление refresh токена в куки
         res.cookie('refreshToken', tokens.refreshToken, {
             maxAge: 30 * 24 * 60 * 60 * 1000,
             httpOnly: true,
+            // HTTPS: secure: true,
         });
 
         res.status(201).send({
@@ -123,32 +125,32 @@ const auth = async (req, res) => {
             person: personDto,
         });
     } catch (error) {
-        res.status(500).json({
-            error: error.message,
-            stack: error.stack,
-        });
+        next(error);
     }
 };
 
-const logout = async (req, res) => {
+const logout = async (req, res, next) => {
     try {
         const { refreshToken } = req.cookies;
 
-        await Token.deleteByRefreshToken(refreshToken);
+        const rowCount = await Token.deleteByRefreshToken(refreshToken);
 
-        // Добавление refresh токена в куки
+        // Удаление refresh токена из куки
         res.clearCookie('refreshToken');
 
-        res.status(201).send({ refreshToken });
+        if (rowCount === 1) {
+            res.status(201).json({ message: 'Успешно' });
+        } else {
+            throw ApiError.BadRequest('Произошла ошибка при удалении токена');
+        }
+
+        res.status(201).json(token);
     } catch (error) {
-        res.status(500).json({
-            error: error.message,
-            stack: error.stack,
-        });
+        next(error);
     }
 };
 
-const refresh = async (req, res) => {
+const refresh = async (req, res, next) => {
     try {
         const { refreshToken } = req.cookies;
 
@@ -156,19 +158,16 @@ const refresh = async (req, res) => {
 
         res.status(200).json(data);
     } catch (error) {
-        res.status(500).json({
-            error: error.message,
-            stack: error.stack,
-        });
+        next(error);
     }
 };
 
-const profile = async (req, res) => {
+const profile = async (req, res, next) => {
     try {
         const { person } = req;
 
         if (!person || req.error) {
-            throw new Error(req.error ?? 'Не удалось получить профиль пользователя');
+            throw ApiError.BadRequest(req.error ?? 'Не удалось получить профиль пользователя');
         }
 
         const personFromDb = await Person.findByLogin(person.login);
@@ -177,10 +176,7 @@ const profile = async (req, res) => {
 
         res.status(200).json(personDto);
     } catch (error) {
-        res.status(500).json({
-            error: error.message,
-            stack: error.stack,
-        });
+        next(error);
     }
 };
 

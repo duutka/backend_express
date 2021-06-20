@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 
 /* OTHER */
 import routes from './routes/index.js';
+import defaultError from './middleware/defaultError.js';
 
 dotenv.config();
 
@@ -23,6 +24,8 @@ app.use('/', routes.plantParts);
 app.use('/', routes.plants);
 app.use('/', routes.scans);
 app.use('/', routes.person);
+
+app.use(defaultError);
 
 /* PORT */
 const PORT = process.env.PORT;
