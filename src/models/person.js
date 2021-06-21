@@ -1,4 +1,4 @@
-/* OTHER */
+/* POOL */
 import pool from '../config/db.config.js';
 
 /* Get user by login */

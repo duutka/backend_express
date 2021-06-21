@@ -25,6 +25,7 @@ app.use('/', routes.plants);
 app.use('/', routes.scans);
 app.use('/', routes.person);
 
+/* ERROR MIDDLEWARE */
 app.use(defaultError);
 
 /* PORT */

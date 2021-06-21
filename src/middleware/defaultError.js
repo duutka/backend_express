@@ -1,3 +1,4 @@
+/* ERROR HANDLER */
 import ApiError from '../exceptions/apiError.js';
 
 const defaultError = (err, req, res, next) => {

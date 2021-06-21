@@ -1,4 +1,6 @@
+/* ERROR HANDLER */
 import apiError from '../exceptions/apiError.js';
+/* MODELS */
 import token from '../models/token.js';
 
 const authValidate = (req, res, next) => {

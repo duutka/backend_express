@@ -1,10 +1,16 @@
 /* NPM */
 import jwt from 'jsonwebtoken';
 
-/* OTHER */
+/* POOL */
 import pool from '../config/db.config.js';
+
+/* MODELS */
 import Person from '../models/person.js';
+
+/* DTO */
 import PersonDto from '../dtos/person-dto.js';
+
+/* ERROR HANDLER */
 import ApiError from '../exceptions/apiError.js';
 
 /* Get token by login */

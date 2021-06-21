@@ -26,7 +26,7 @@ const register = async (req, res, next) => {
         const person = await Person.findByLogin(login);
 
         if (person) {
-            throw ApiError.BadRequest({ error: 'Пользователь с таким логином уже существует' });
+            throw ApiError.BadRequest('Пользователь с таким логином уже существует');
         }
 
         // Хэшируем пароль
@@ -51,7 +51,7 @@ const register = async (req, res, next) => {
         const save = await Token.save({ login, refreshToken: tokens.refreshToken });
 
         if (!save) {
-            throw ApiError.BadRequest('Произошла ошибка, при сохранении токена');
+            throw ApiError.BadRequest('Произошла ошибка, при авторизации');
         }
 
         // Добавление refresh токена в куки
@@ -110,7 +110,7 @@ const auth = async (req, res, next) => {
         const save = await Token.save({ login, refreshToken: tokens.refreshToken });
 
         if (!save) {
-            throw ApiError.BadRequest('Произошла ошибка, при сохранении токена');
+            throw ApiError.BadRequest('Произошла ошибка, при авторизации');
         }
 
         // Добавление refresh токена в куки
@@ -153,6 +153,10 @@ const logout = async (req, res, next) => {
 const refresh = async (req, res, next) => {
     try {
         const { refreshToken } = req.cookies;
+
+        if (!refreshToken) {
+            throw ApiError.UnauthorizedError();
+        }
 
         const data = await Token.refresh(refreshToken);
 
