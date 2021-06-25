@@ -58,7 +58,7 @@ const register = async (req, res, next) => {
         res.cookie('refreshToken', tokens.refreshToken, {
             maxAge: 30 * 24 * 60 * 60 * 1000,
             httpOnly: true,
-            // HTTPS: secure: true,
+            secure: true,
         });
 
         res.status(200).json({
@@ -117,7 +117,7 @@ const auth = async (req, res, next) => {
         res.cookie('refreshToken', tokens.refreshToken, {
             maxAge: 30 * 24 * 60 * 60 * 1000,
             httpOnly: true,
-            // HTTPS: secure: true,
+            secure: true,
         });
 
         res.status(201).send({

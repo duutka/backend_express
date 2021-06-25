@@ -64,7 +64,7 @@
     - `refresh_token помещается в cookie`
     - `access_token необходимо вручную установить в header authorization в формате 'Bearer ${access_token}'`
 3. Получаем профиль (GET Profile)
-4. Если истекает срок действия access_token, то необходимо обновить токен(GET profile)
+4. Если истекает срок действия access_token, то необходимо обновить токен(GET refresh)
 
 ## Работа с проектом
 1. `npm i`: Установка зависимостей проекта;
