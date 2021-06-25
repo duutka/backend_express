@@ -47,6 +47,25 @@
 | **/scans**           | POST | Если файл отсутствует(req.file==undefined) или формат файла не .png, .jpg или .jpeg | Необходимо загрузить файл или файл не является картинкой|400|
 | *                    | *    | Ошибка на сервере                               | Текст ошибки                      | 500    |
 
+### Авторизация
+| Запрос                    | Тип  | Описание                         | Успех                                                   | 
+| ------------------------- | ---- | -------------------------------- | ------------------------------------------------------- |
+| **/login/**               | GET  | Получение csrf токена            | "csrfToken": "BKAkM9la-kB8bqkkIl9aIJzlCyetVlrfyRuI"     |  
+| **/login/**               | POST | На вход (login, password, _csrf) | {"accessToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InRlc3QzIiwiZmlyc3RuYW1lIjoib2xlZ292aWNoIiwibGFzdG5hbWUiOiJvbGVnb3ZpY2giLCJpYXQiOjE2MjQyMDAzOTAsImV4cCI6MTYyNDIwMjE5MH0.OotH-YDdqQ_0R-2rCOtAMTJDru0Zrvsup1ob7nGbe-I","refreshToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InRlc3QzIiwiZmlyc3RuYW1lIjoib2xlZ292aWNoIiwibGFzdG5hbWUiOiJvbGVnb3ZpY2giLCJpYXQiOjE2MjQyMDAzOTAsImV4cCI6MTYyNjc5MjM5MH0.FD9mFUjnZHi-bYtCM_ikFzhP_v06dSUlyuzinb_n4Lw","person": {"login": "test3","firstname": "olegovich","lastname": "olegovich"}} |
+| **/logout/**              | POST | Выход из системы                  | "message": "Успешно"                                      |
+| **/refresh/**             | GET  | Обновление токенов при истечении срока access_token | {"accessToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InRlc3QzIiwiZmlyc3RuYW1lIjoib2xlZyIsImxhc3RuYW1lIjoib2xlZ292aWNoIiwiaWF0IjoxNjI0MjAwNDA4LCJleHAiOjE2MjQyMDIyMDh9.9KeahrbtckLeIOArlEvdsXPhsQzz7MlmETC-MDnap6M","refreshToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InRlc3QzIiwiZmlyc3RuYW1lIjoib2xlZyIsImxhc3RuYW1lIjoib2xlZ292aWNoIiwiaWF0IjoxNjI0MjAwNDA4LCJleHAiOjE2MjY3OTI0MDh9.giTqkcsibI_j_IvNolNJ8SA2IwbXmmisrtIuLaxGCS8","person": {"login": "test3","firstname": "oleg","lastname": "olegovich"}}|
+| **/profile/**             | GET  | Получение профиля пользователя   | {"login": "test3","firstname": "oleg","lastname": "olegovich"}|
+| **/register/**            | POST | Регистрация нового пользователя(на вход login, password, firstname, lastname) | {"message": "Пользователь зарегистрирован", "accessToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InRlc3QzIiwiZmlyc3RuYW1lIjoib2xlZyIsImxhc3RuYW1lIjoib2xlZ292aWNoIiwiaWF0IjoxNjI0MjAwMjIxLCJleHAiOjE2MjQyMDIwMjF9.Gh5fGVovYoDYeNi5X5ujZ62-9LgSaEGn-eVQrzbo54","refreshToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InRlc3QzIiwiZmlyc3RuYW1lIjoib2xlZyIsImxhc3RuYW1lIjoib2xlZ292aWNoIiwiaWF0IjoxNjI0MjAwMjIxLCJleHAiOjE2MjY3OTIyMjF9.5b3vcO1jBbp2g0VftMe1UPSY59UdJd_WPwR5T2wQjgg","person": {"login": "test3","firstname": "oleg","lastname": "olegovich"}} |
+
+Пример авторизации:
+1. Получаем csrf token(GET /login)
+2. Авторизируемся (POST /login, с использование csrf токена на прошлом этапе)
+После авторизации получаем два токена:
+    - `refresh_token помещается в cookie`
+    - `access_token необходимо вручную установить в header authorization в формате 'Bearer ${access_token}'`
+3. Получаем профиль (GET Profile)
+4. Если истекает срок действия access_token, то необходимо обновить токен(GET refresh)
+
 ## Работа с проектом
 1. `npm i`: Установка зависимостей проекта;
 2. `npm run start`: Запуск dev сервера на http://localhost:8000/;

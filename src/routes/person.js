@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 /* OTHER */
 import personController from '../controllers/person.js';
 import validator from '../middleware/validator.js';
+import authValidate from '../middleware/authValidate.js';
 
 dotenv.config();
 
@@ -33,6 +34,6 @@ router.post('/logout', personController.logout);
 
 router.get('/refresh', personController.refresh);
 
-router.get('/profile', validator.validateAuth, personController.profile);
+router.get('/profile', authValidate, personController.profile);
 
 export default router;
