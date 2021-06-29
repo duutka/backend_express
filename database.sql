@@ -1,5 +1,3 @@
---Create plant table
-
 create table plant
 (
     id      bigserial not null
@@ -16,14 +14,12 @@ comment on column plant.name_en is 'Название на английском';
 comment on column plant.name_ru is 'Название на русском';
 
 alter table plant
-    owner to postgres;
+    owner to awaayuxcfwcbat;
 
 create unique index plant_id_uindex
     on plant (id);
 
 INSERT INTO public.plant (id, name_en, name_ru) VALUES (2, 'Dandelion', 'Одуванчик');
-
---Create plant_part table
 
 create table plant_part
 (
@@ -41,14 +37,12 @@ comment on column plant_part.name_en is 'Название на английск�
 comment on column plant_part.name_ru is 'Название на русском';
 
 alter table plant_part
-    owner to postgres;
+    owner to awaayuxcfwcbat;
 
 create unique index plant_part_id_uindex
     on plant_part (id);
 
 INSERT INTO public.plant_part (id, name_en, name_ru) VALUES (1, 'Leafs', 'Листья');
-
---Create disease table
 
 create table disease
 (
@@ -66,14 +60,12 @@ comment on column disease.name_en is 'Название на английском
 comment on column disease.name_ru is 'Название на русском';
 
 alter table disease
-    owner to postgres;
+    owner to awaayuxcfwcbat;
 
 create unique index disease_id_uindex
     on disease (id);
 
 INSERT INTO public.disease (id, name_en, name_ru) VALUES (1, 'Ulcer', 'Язва');
-
---Create scan table
 
 create table scan
 (
@@ -107,15 +99,13 @@ comment on column scan.image_name is 'Название изображения';
 comment on column scan.upload_date is 'Время загрузки';
 
 alter table scan
-    owner to postgres;
+    owner to awaayuxcfwcbat;
 
 create unique index scan_id_uindex
     on scan (id);
 
 INSERT INTO public.scan (id, plant_id, disease_id, plant_part_id, image_name, upload_date) VALUES (3, 2, 1, 1, 'some-name.png', '2021-05-29 16:21:24.283708');
 INSERT INTO public.scan (id, plant_id, disease_id, plant_part_id, image_name, upload_date) VALUES (4, 2, 1, 1, 'some-name-2.png', '2021-05-29 16:38:26.029903');
-
---Create scan_vw view
 
 create view scan_vw
             (id, image_name, upload_date, plant_id, plant_name_en, plant_name_ru, disease_id, disease_name_en,
@@ -152,12 +142,8 @@ comment on column scan_vw.plant_id is 'ID растения';
 comment on column scan_vw.disease_id is 'ID болезни';
 
 alter table scan_vw
-    owner to postgres;
+    owner to awaayuxcfwcbat;
 
-INSERT INTO public.scan_vw (id, image_name, upload_date, plant_id, plant_name_en, plant_name_ru, disease_id, disease_name_en, disease_name_ru, plant_part_id, plant_part_name_en, plant_part_name_ru) VALUES (3, 'some-name.png', '2021-05-29 16:21:24.283708', 2, 'Dandelion', 'Одуванчик', 1, 'Ulcer', 'Язва', 1, 'Leafs', 'Листья');
-INSERT INTO public.scan_vw (id, image_name, upload_date, plant_id, plant_name_en, plant_name_ru, disease_id, disease_name_en, disease_name_ru, plant_part_id, plant_part_name_en, plant_part_name_ru) VALUES (4, 'some-name-2.png', '2021-05-29 16:38:26.029903', 2, 'Dandelion', 'Одуванчик', 1, 'Ulcer', 'Язва', 1, 'Leafs', 'Листья');
-
---Create person table
 create table person
 (
     login      varchar not null
@@ -179,12 +165,11 @@ comment on column person.firstname is 'Имя';
 comment on column person.lastname is 'Фамилия';
 
 alter table person
-    owner to postgres;
+    owner to awaayuxcfwcbat;
 
 create unique index person_login_uindex
     on person (login);
 
---Create person table
 create table token
 (
     person_login  varchar not null
@@ -201,7 +186,7 @@ comment on table token is 'JWT token';
 comment on column token.person_login is 'ID пользователя';
 
 alter table token
-    owner to postgres;
+    owner to awaayuxcfwcbat;
 
 create unique index token_person_login_uindex
     on token (person_login);
