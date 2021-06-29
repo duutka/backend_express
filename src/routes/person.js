@@ -1,6 +1,6 @@
 /* NPM */
 import { Router } from 'express';
-import session from 'express-session';
+import session from 'cookie-session';
 import csrf from 'csurf';
 import dotenv from 'dotenv';
 
@@ -19,8 +19,9 @@ router.use(
     session({
         name: 'SESSION_LEAFS',
         secret: `${process.env.SESSION_SECRET}`,
+        maxAge: 1000 * 60 * 5,
+        resave: false,
         saveUninitialized: true,
-        resave: true,
     }),
 );
 

@@ -3,9 +3,9 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
-import fs from 'fs';
-import path from 'path';
-import https from 'https';
+// import fs from 'fs';
+// import path from 'path';
+// import https from 'https';
 
 /* OTHER */
 import routes from './routes/index.js';
