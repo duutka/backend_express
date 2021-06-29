@@ -31,7 +31,7 @@
         "prettier": "^2.3.0"
     },
     "scripts": {
-        "start": "NODE_ENV babel-node src/index.js",
+        "start": "node src/index.js",
         "dev": "nodemon --exec babel-node src/index.js",
         "lint": "eslint ./src --ext .js",
         "lint:fix": "eslint --ext js src --fix",
